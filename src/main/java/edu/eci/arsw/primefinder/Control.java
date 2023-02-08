@@ -9,7 +9,7 @@ package edu.eci.arsw.primefinder;
  *
  */
 public class Control extends Thread {
-    
+
     private final static int NTHREADS = 3;
     private final static int MAXVALUE = 30000000;
     private final static int TMILISECONDS = 5000;
@@ -17,7 +17,7 @@ public class Control extends Thread {
     private final int NDATA = MAXVALUE / NTHREADS;
 
     private PrimeFinderThread pft[];
-    
+
     private Control() {
         super();
         this.pft = new  PrimeFinderThread[NTHREADS];
@@ -29,7 +29,7 @@ public class Control extends Thread {
         }
         pft[i] = new PrimeFinderThread(i*NDATA, MAXVALUE + 1);
     }
-    
+
     public static Control newControl() {
         return new Control();
     }
@@ -40,5 +40,8 @@ public class Control extends Thread {
             pft[i].start();
         }
     }
-    
+    public void pausarEjecucion() throws InterruptedException { for(PrimeFinderThread thread: pft){
+        thread.pausa();}}
+    public void reanudarEjecucion(){ for(PrimeFinderThread thread: pft){
+        thread.reanudar();}}
 }

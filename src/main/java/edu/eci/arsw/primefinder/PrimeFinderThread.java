@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PrimeFinderThread extends Thread{
 
-	
+    public boolean ejecutando = false;
 	int a,b;
 	
 	private List<Integer> primes;
@@ -23,6 +23,7 @@ public class PrimeFinderThread extends Thread{
                 if (isPrime(i)){
                     primes.add(i);
                     System.out.println(i);
+                    suspendido();
                 }
             }
 	}
@@ -43,5 +44,25 @@ public class PrimeFinderThread extends Thread{
 	public List<Integer> getPrimes() {
 		return primes;
 	}
+
+    public synchronized void pausa(){
+        ejecutando = true;
+    }
+    public synchronized void suspendido(){
+        while(ejecutando){
+            try{
+                System.out.println("numero de primos: " + getPrimes().size());
+                wait();
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+    public synchronized void reanudar(){
+        ejecutando = false;
+        notifyAll();
+    }
 	
 }
